@@ -1,26 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Advanced Cute To-Do App</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Ultimate Cute To-Do App 💖</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<style>
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  display: flex;
+  height: 100vh;
+  background: linear-gradient(135deg,#667eea,#764ba2);
+}
+
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  background: rgba(0,0,0,0.3);
+  color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sidebar h2 {
+  text-align: center;
+}
+
+.nav-btn {
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.nav-btn:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+/* Main */
+.main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.page {
+  display: none;
+  background: white;
+  padding: 20px;
+  border-radius: 20px;
+  width: 400px;
+  animation: fade 0.5s;
+}
+
+.active { display: block; }
+
+@keyframes fade {
+  from {opacity:0; transform:translateY(10px);} 
+  to {opacity:1; transform:translateY(0);} 
+}
+
+input, button {
+  padding: 10px;
+  margin: 5px;
+  border-radius: 10px;
+  border: none;
+}
+
+button {
+  background: #ff7eb3;
+  color: white;
+  cursor: pointer;
+}
+
+ul { list-style:none; padding:0; }
+
+li {
+  background:#f1f1f1;
+  margin-top:8px;
+  padding:10px;
+  border-radius:10px;
+}
+
+.completed { text-decoration: line-through; }
+
+img.side-img {
+  width: 80px;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  animation: float 3s infinite;
+}
+
+@keyframes float {
+  0%,100%{transform:translateY(0);} 
+  50%{transform:translateY(-10px);} 
+}
+
+</style>
 </head>
+
 <body>
 
-<div class="app">
-  <div class="top-bar">
-    <h3>My To-Do 💖</h3>
-    <button onclick="toggleDark()">🌙</button>
-  </div>
-
-  <input id="taskInput" placeholder="Task...">
-  <input type="datetime-local" id="taskTime">
-  <button onclick="addTask()">Add</button>
-
-  <ul id="taskList"></ul>
-  <div id="compliment" class="compliment"></div>
+<div class="sidebar">
+  <h2>💖 Menu</h2>
+  <div class="nav-btn" onclick="showPage('todo')"><i class="fa fa-list"></i> To-Do</div>
+  <div class="nav-btn" onclick="showPage('about')"><i class="fa fa-user"></i> About</div>
+  <div class="nav-btn" onclick="showPage('stats')"><i class="fa fa-chart-bar"></i> Stats</div>
 </div>
 
-<script src="script.js"></script>
+<div class="main">
+
+<!-- TO-DO PAGE -->
+<div id="todo" class="page active">
+  <h3>My Tasks ✨</h3>
+  <input id="taskInput" placeholder="Task...">
+  <button onclick="addTask()"><i class="fa fa-plus"></i></button>
+  <ul id="taskList"></ul>
+</div>
+
+<!-- ABOUT PAGE -->
+<div id="about" class="page">
+  <h3>About 💡</h3>
+  <p>This is a cute productivity app with animations 💖</p>
+</div>
+
+<!-- STATS PAGE -->
+<div id="stats" class="page">
+  <h3>Stats 📊</h3>
+  <p id="statsText"></p>
+</div>
+
+</div>
+
+<img class="side-img" src="https://cdn-icons-png.flaticon.com/512/616/616408.png">
+
+<script>
+let tasks = [];
+
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(page).classList.add('active');
+  updateStats();
+}
+
+function addTask() {
+  const text = document.getElementById('taskInput').value;
+  if(!text) return;
+
+  tasks.push({text, done:false});
+  renderTasks();
+  document.getElementById('taskInput').value='';
+}
+
+function renderTasks() {
+  const list = document.getElementById('taskList');
+  list.innerHTML='';
+
+  tasks.forEach((t,i)=>{
+    const li=document.createElement('li');
+
+    const cb=document.createElement('input');
+    cb.type='checkbox';
+    cb.onclick=()=>{t.done=!t.done; renderTasks();};
+
+    const span=document.createElement('span');
+    span.textContent=t.text;
+    if(t.done) span.classList.add('completed');
+
+    const del=document.createElement('button');
+    del.innerHTML='❌';
+    del.onclick=()=>{tasks.splice(i,1); renderTasks();};
+
+    li.append(cb,span,del);
+    list.appendChild(li);
+  });
+}
+
+function updateStats(){
+  const total=tasks.length;
+  const done=tasks.filter(t=>t.done).length;
+  document.getElementById('statsText').textContent=`Total: ${total} | Completed: ${done}`;
+}
+</script>
+
 </body>
 </html>
