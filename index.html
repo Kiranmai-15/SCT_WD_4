@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Advanced Cute To-Do App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+  <div class="top-bar">
+    <h3>My To-Do 💖</h3>
+    <button onclick="toggleDark()">🌙</button>
+  </div>
+
+  <input id="taskInput" placeholder="Task...">
+  <input type="datetime-local" id="taskTime">
+  <button onclick="addTask()">Add</button>
+
+  <ul id="taskList"></ul>
+  <div id="compliment" class="compliment"></div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
