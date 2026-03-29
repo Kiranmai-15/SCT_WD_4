@@ -8,7 +8,6 @@ const compliments = [
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 let darkMode = localStorage.getItem("darkMode");
 
-/* Load dark mode */
 if (darkMode === "enabled") {
   document.body.classList.add("dark");
 }
@@ -88,7 +87,6 @@ function addTask() {
   document.getElementById("taskInput").value = "";
 }
 
-/* Enter key support */
 document.getElementById("taskInput").addEventListener("keypress", function(e) {
   if (e.key === "Enter") addTask();
 });
@@ -126,6 +124,12 @@ function checkReminder(task) {
       alert("Reminder: " + task.text);
     }, taskTime - now);
   }
+}
+
+/* 🔥 ADD THIS */
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(page).classList.add('active');
 }
 
 renderTasks();
